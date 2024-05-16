@@ -1,5 +1,8 @@
 from rest_framework.response import Response
+
 from rest_framework.decorators import api_view
+from base.models import Item
+from .serializer import ItemSerializer
 import random
 food_dictionary = {
     1: "Pizza",
@@ -59,3 +62,9 @@ food_dictionary = {
 @api_view(['GET'])
 def getData(request):
     return Response(food_dictionary[random.randint(1,50)])
+@api_view(['POST'])
+def postData(request):
+    serializer=ItemSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+    return Response(serializer.data)
